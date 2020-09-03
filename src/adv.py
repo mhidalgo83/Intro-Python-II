@@ -47,7 +47,8 @@ wrapper = textwrap.TextWrapper(width=50)
 
 # Make a new player object that is currently in the 'outside' room.
 name = input("What is your name? ")
-key = None
+command = ""
+item = None
 new_player = Player(name, room["outside"], [])
 is_playing = True
 not_valid = "Invalid key. Please try again."
@@ -62,44 +63,59 @@ not_valid = "Invalid key. Please try again."
 #
 # If the user enters "q", quit the game.
 
+# 
+
 while is_playing:
     print(new_player)
-    key = input("Select the first letter of the direction you would like to move.\nTo pick up an item, type the word 'get'.\nTo drop an item, type the word 'drop'.\nPress 'q' to quit. ")
-    print("-------------------------")
-    if key == "q":
-        print("Thanks for playing.")
-        is_playing = False
-        break;
-    if new_player.room == room['outside']:
-        if key != "n" or key !="q":
-            print(not_valid)
-        elif key == "n":
-            new_player.room = new_player.room.n_to    
-    elif new_player.room == room['foyer']:
-        if key == "s":
-            new_player.room = new_player.room.s_to
-        elif key == "n":
-             new_player.room = new_player.room.n_to
-        elif key == "e":
-            new_player.room = new_player.room.e_to
-        elif key != "n" or key != "s" or key != "e" or key !="q":
-            print(not_valid)
-    elif new_player.room == room['overlook']:
-        if key == "s":
-            new_player.room = new_player.room.s_to
-        elif key != "s" or key !="q":
-            print(not_valid)
-    elif new_player.room == room["narrow"]:
-        if key == "w":
-             new_player.room = new_player.room.w_to
-        elif key == "n":
-             new_player.room = new_player.room.n_to
-        elif key != "n" or key != "w" or key !="q":
-            print(not_valid)
-    elif new_player.room == room['treasure']:
-        if key == "s":
-            new_player.room = new_player.room.s_to
-        elif key != "n" or key != "w" or key != "e" or key !="q":
-            print(not_valid)
-
+    print("---------------")
+    command = input("Select the first letter of the direction you would like to move.\nTo pick up an item, type the word 'get' and the name of the item.\nTo drop an item, type the word 'drop' and the name of the item in your inventory.\nPress 'q' to quit.\nPress 'i' to check your inventory.")
+    print("---------------")
+    key = command.split()
+ 
+    if len(key) == 1:
+        if key[0] == "q":
+            print("Thanks for playing.")
+            is_playing = False
+            break
+        if key[0] == "i":
+            new_player.check_inventory()
+            continue
+        if new_player.room == room['outside']:
+            if key[0] == "n":
+                new_player.room = new_player.room.n_to  
+            elif key[0] != "i" or key[0] != "n" or key[0] !="q":
+                print(not_valid)
+        elif new_player.room == room['foyer']:
+            if key[0] == "s":
+                new_player.room = new_player.room.s_to
+            elif key[0] == "n":
+                new_player.room = new_player.room.n_to
+            elif key[0] == "e":
+                new_player.room = new_player.room.e_to
+            elif key[0] != "i" or key[0] != "n" or key[0] != "s" or key[0] != "e" or key[0] !="q":
+                print(not_valid)
+        elif new_player.room == room['overlook']:
+            if key[0] == "s":
+                new_player.room = new_player.room.s_to
+            elif key[0] != "i" or  key != "s" or key !="q":
+                print(not_valid)
+        elif new_player.room == room["narrow"]:
+            if key[0] == "w":
+                new_player.room = new_player.room.w_to
+            elif key[0] == "n":
+                new_player.room = new_player.room.n_to
+            elif key[0] != "i" or key[0] != "n" or key[0] != "w" or key[0] !="q":
+                print(not_valid)
+        elif new_player.room == room['treasure']:
+            if key[0] == "s":
+                new_player.room = new_player.room.s_to
+            elif key[0] != "i" or key[0] != "n" or key[0] != "w" or key[0] != "e" or key[0] !="q":
+                print(not_valid)
+    elif len(key) == 2:       
+        if key[0] == "get":
+            new_player.get_item(key[1])
+        elif key[0] == "drop":
+            new_player.drop_item(key[1])
+        else:
+            print("Invalid key. Please make another selection to continue your adventure.")
     
