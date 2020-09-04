@@ -52,6 +52,7 @@ item = None
 new_player = Player(name, room["outside"], [])
 is_playing = True
 not_valid = "Invalid key. Please try again."
+not_travel = "You can't travel that way"
 # Write a loop that:
 #
 # * Prints the current room name
@@ -80,37 +81,33 @@ while is_playing:
         if key[0] == "i":
             new_player.check_inventory()
             continue
-        if new_player.room == room['outside']:
-            if key[0] == "n":
-                new_player.room = new_player.room.n_to  
-            elif key[0] != "i" or key[0] != "n" or key[0] !="q":
-                print(not_valid)
-        elif new_player.room == room['foyer']:
-            if key[0] == "s":
-                new_player.room = new_player.room.s_to
-            elif key[0] == "n":
+        if key[0] == "n":
+            if hasattr(new_player.room, "n_to"):
                 new_player.room = new_player.room.n_to
-            elif key[0] == "e":
+            else:
+                print(not_travel)
+                print("---------------")
+        if key[0] == "s":
+            if hasattr(new_player.room, "s_to"):
+                new_player.room = new_player.room.s_to
+            else:
+                print(not_travel)
+                print("---------------")
+        if key[0] == "e":
+            if hasattr(new_player.room, "e_to"):
                 new_player.room = new_player.room.e_to
-            elif key[0] != "i" or key[0] != "n" or key[0] != "s" or key[0] != "e" or key[0] !="q":
-                print(not_valid)
-        elif new_player.room == room['overlook']:
-            if key[0] == "s":
-                new_player.room = new_player.room.s_to
-            elif key[0] != "i" or  key != "s" or key !="q":
-                print(not_valid)
-        elif new_player.room == room["narrow"]:
-            if key[0] == "w":
+            else:
+                print(not_travel)
+                print("---------------")
+        if key[0] == "w":
+            if hasattr(new_player.room, "w_to"):
                 new_player.room = new_player.room.w_to
-            elif key[0] == "n":
-                new_player.room = new_player.room.n_to
-            elif key[0] != "i" or key[0] != "n" or key[0] != "w" or key[0] !="q":
-                print(not_valid)
-        elif new_player.room == room['treasure']:
-            if key[0] == "s":
-                new_player.room = new_player.room.s_to
-            elif key[0] != "i" or key[0] != "n" or key[0] != "w" or key[0] != "e" or key[0] !="q":
-                print(not_valid)
+            else:
+                print(not_travel)
+                print("---------------")
+        else:
+            print("Invalid key. Please make another selection to continue your adventure.")
+            print("---------------")
     elif len(key) == 2:       
         if key[0] == "get":
             new_player.get_item(key[1])
@@ -118,4 +115,5 @@ while is_playing:
             new_player.drop_item(key[1])
         else:
             print("Invalid key. Please make another selection to continue your adventure.")
+            print("---------------")
     
